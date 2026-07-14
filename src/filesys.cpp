@@ -843,6 +843,13 @@ std::string AbsolutePath(const std::string &path)
 		return "";
 	std::string abs_path_str(abs_path);
 	free(abs_path);
+#ifdef _WIN32
+	while (!abs_path_str.empty() &&
+			IsDirDelimiter(abs_path_str.back()) &&
+			!PathIsRoot(abs_path_str.c_str())) {
+		abs_path_str.pop_back();
+	}
+#endif
 	return abs_path_str;
 }
 
